@@ -3,9 +3,26 @@ html, body, #content {
     width: 100%;
     height: 100%;
     margin: 0px;
+    background-color: #cffffe;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.square {
+.circle {
     position: absolute;
     border-radius: 50%;
+}
+
+#main {
+    position: absolute;
+    background-color: white;
+    width: 600px;
+    height: 800px;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    border: 1px solid black;
 }

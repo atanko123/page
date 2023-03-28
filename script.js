@@ -4,6 +4,7 @@ const lowerSizeBound = 50
 const circles = []
 const speed = 5
 let lastTimestamp = 0
+let animateCircles = false
 
 class Circle {
     constructor(speedX, speedY, element) {
@@ -28,10 +29,10 @@ class Circle {
         const width = parseInt(this.element.style.width)
         const height = parseInt(this.element.style.height)
 
-        if (top < 0 || top > innerHeight) {
+        if (top < 0 || top > innerHeight - height) {
             this._speedY *= -1
         }
-        else if (left < 0 || left > innerWidth) {
+        else if (left < 0 || left > innerWidth - width) {
             this._speedX *= -1
         }
     }
@@ -47,7 +48,18 @@ function animate() {
             }
             lastTimestamp = timestamp
         }
-        window.requestAnimationFrame(nextStep)
+        if (animateCircles) {
+            window.requestAnimationFrame(nextStep)
+        }
+    }
+}
+
+function startStop() {
+    if (animateCircles) {
+        animateCircles = false
+    } else {
+        animateCircles = true
+        animate()
     }
 }
 
@@ -56,17 +68,17 @@ function init() {
     const content = document.getElementById('content')
 
     for (let i=0; i<numberOfCircles; i++) {
-        const element = document.createElement('div')
-        const top = randomNumber(0, innerHeight)
-        const left = randomNumber(0, innerWidth)
         const size = randomNumber(lowerSizeBound, upperSizeBound)
+        const element = document.createElement('div')
+        const top = randomNumber(0, innerHeight - size)
+        const left = randomNumber(0, innerWidth - size)
         const color = randomColor()
         const speedX = randomNumber(-1, 1)
         const speedY = randomNumber(-1, 1)
         const circle = new Circle(speedX, speedY, element)
 
         // ----------------------
-        element.classList.add('square')
+        element.classList.add('circle')
         element.style.width = `${size}px`
         element.style.height = `${size}px`
         element.style.background = `${color}`
@@ -76,6 +88,7 @@ function init() {
         content.appendChild(element)
         circles.push(circle)
     }
+    animateCircles = true
     animate()
 
     function randomNumber(min, max) {
